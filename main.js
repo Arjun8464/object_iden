@@ -1,6 +1,6 @@
 img="";
 dectect_status="";
-
+objects = [];
 
 
 function preload(){
@@ -23,20 +23,26 @@ function gotResult(error,results){
         console.error(error);
     }
     else
-    {console.log(results);}
+    {console.log(results);
+    objects = results;}
 }
 
 function draw(){
     image(img,0,0, 640, 420);
-    fill("#FF0000");
-    text("dog", 150, 70);
-    stroke("#FF0000");
-    noFill();
-    rect(130, 58, 300, 300);
+   
+    if(dectect_status !="")
+    {
+        for(i = 0; i < objects.length; i++)
+        {
+            document.getElementById("status").innerHTML = "Status: Objects Detected";
 
-    fill("#FF0000");
-    text("cat", 280, 100);
-    stroke("#FF0000");
-    noFill();
-    rect(260, 71, 260, 300);
+            percent = floor(objects[i].confidence * 100);
+            console.log(percent);
+            fill('#4B0082');
+            text(objects[i].label + " " + percent + "%", objects[i].x, objects[i].y);
+            noFill();
+            stroke("#4B0082");
+            rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        }
+    }
 }
